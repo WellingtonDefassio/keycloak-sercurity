@@ -8,3 +8,10 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/realms/pokemonusers
 #          jwk-set-uri: http://localhost:8080/realms/pokemonusers/protocol/openid-connect/certs
+
+  application:
+    name: api-using-keycloak
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka
