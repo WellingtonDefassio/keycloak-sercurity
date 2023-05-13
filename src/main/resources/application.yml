@@ -1,5 +1,6 @@
 server:
-  port: 8081
+  port: 0
+
 
 spring:
   security:
@@ -9,9 +10,13 @@ spring:
           issuer-uri: http://localhost:8080/realms/pokemonusers
 #          jwk-set-uri: http://localhost:8080/realms/pokemonusers/protocol/openid-connect/certs
 
+
   application:
     name: api-using-keycloak
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8010/eureka
+  instance:
+    instance-id: ${spring.application.name}:${instanceId:${random.value}}
+

@@ -9,6 +9,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @EnableWebSecurity
 @Slf4j
@@ -22,13 +27,17 @@ public class WebSecurity {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
 
-        http.authorizeHttpRequests()
+        http
+//                .cors().and()
+                .authorizeHttpRequests()
                 .antMatchers(HttpMethod.GET, "/users/status/check")
                 .hasRole("suporte")
                 .antMatchers(HttpMethod.GET, "/hacker")
 //                .hasAuthority("SCOPE_hacker")
                 .hasRole("treinador")
 //                .hasAnyRole("treinador", "user")
+                .antMatchers(HttpMethod.GET, "/albums")
+                .hasAnyRole("treinador", "user")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -38,6 +47,17 @@ public class WebSecurity {
 
         return http.build();
     }
-
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
+//        corsConfiguration.setAllowedMethods(Arrays.asList("*"));
+//        corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", corsConfiguration);
+//
+//        return source;
+//    }
 
 }

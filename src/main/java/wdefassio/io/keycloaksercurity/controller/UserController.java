@@ -1,5 +1,7 @@
 package wdefassio.io.keycloaksercurity.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,9 +16,13 @@ import javax.websocket.server.PathParam;
 @RequestMapping("/users")
 public class UserController {
 
+
+    @Autowired
+    Environment environment;
+
     @GetMapping("/status/check")
     public String status() {
-        return "ok";
+        return "ok in port " + environment.getProperty("local.server.port");
     }
 
     @PreAuthorize("hasAnyRole('suporte') or #id == #jwt.subject")
